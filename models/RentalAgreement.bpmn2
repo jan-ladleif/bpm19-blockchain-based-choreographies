@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ac="http://hpi.de/ac" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" id="_srhacPLsEeijEq0Ie-5kFg">
+  <bpmn2:choreography id="id_root">
+    <ac:neutralEntity xsi:type="bpmn2:tParticipant" id="_2f-XEPLsEeijEq0Ie-5kFg" name="Neutral"/>
+    <bpmn2:participant id="_2f--IPLsEeijEq0Ie-5kFg" name="Tenant"/>
+    <bpmn2:participant id="_5SF5YPLsEeijEq0Ie-5kFg" name="Landlord"/>
+    <bpmn2:participant id="_5SF5YfLsEeijEq0Ie-5kFg" name="RBO"/>
+    <bpmn2:messageFlow id="_qZtTYPLtEeijEq0Ie-5kFg" messageRef="#_qZtTYfLtEeijEq0Ie-5kFg" name="pay bond" sourceRef="#_2f--IPLsEeijEq0Ie-5kFg" targetRef="#_5SF5YfLsEeijEq0Ie-5kFg"/>
+    <bpmn2:messageFlow id="_qZtTYvLtEeijEq0Ie-5kFg" messageRef="#_qZtTY_LtEeijEq0Ie-5kFg" name="file claim for bond" sourceRef="#_5SF5YPLsEeijEq0Ie-5kFg" targetRef="#_5SF5YfLsEeijEq0Ie-5kFg"/>
+    <bpmn2:messageFlow id="_qZtTZPLtEeijEq0Ie-5kFg" messageRef="#_qZtTY_LtEeijEq0Ie-5kFg" name="file dispute" sourceRef="#_2f--IPLsEeijEq0Ie-5kFg" targetRef="#_5SF5YfLsEeijEq0Ie-5kFg"/>
+    <bpmn2:messageFlow id="_qZtTZfLtEeijEq0Ie-5kFg" messageRef="#_qZtTZvLtEeijEq0Ie-5kFg" name="file dispute response" sourceRef="#_5SF5YfLsEeijEq0Ie-5kFg" targetRef="#_2f--IPLsEeijEq0Ie-5kFg"/>
+    <bpmn2:messageFlow id="_qZtTZ_LtEeijEq0Ie-5kFg" messageRef="#_qZtTY_LtEeijEq0Ie-5kFg" name="accept claim" sourceRef="#_2f--IPLsEeijEq0Ie-5kFg" targetRef="#_5SF5YfLsEeijEq0Ie-5kFg"/>
+    <bpmn2:messageFlow id="_qZtTaPLtEeijEq0Ie-5kFg" messageRef="#_qZtTafLtEeijEq0Ie-5kFg2d" name="transfer bond to landlord" sourceRef="#_5SF5YfLsEeijEq0Ie-5kFg" targetRef="#_5SF5YPLsEeijEq0Ie-5kFg"/>
+    <bpmn2:messageFlow id="_qZtTavLtEeijEq0Ie-5kFg" messageRef="#_qZtTY_LtEeijEq0Ie-5kFg" name="release bond" sourceRef="#_5SF5YPLsEeijEq0Ie-5kFg" targetRef="#_5SF5YfLsEeijEq0Ie-5kFg"/>
+    <bpmn2:messageFlow id="_qZt6cPLtEeijEq0Ie-5kFg" messageRef="#_qZtTafLtEeijEq0Ie-5kFg" name="refund bond to tenant" sourceRef="#_5SF5YfLsEeijEq0Ie-5kFg" targetRef="#_2f--IPLsEeijEq0Ie-5kFg"/>
+    <bpmn2:messageFlow id="_LfHtsPLxEeijEq0Ie-5kFg" messageRef="#_qZtTYfLtEeijEq0Ie-5kFg" name="pay rent" sourceRef="#_2f--IPLsEeijEq0Ie-5kFg" targetRef="#_5SF5YPLsEeijEq0Ie-5kFg"/>
+    <bpmn2:messageFlow id="_LfHtsfLxEeijEq0Ie-5kFg" messageRef="#_qZtTY_LtEeijEq0Ie-5kFg" name="end tenancy" sourceRef="#_2f--IPLsEeijEq0Ie-5kFg" targetRef="#_5SF5YPLsEeijEq0Ie-5kFg"/>
+    <bpmn2:startEvent id="_HfUXoPLuEeijEq0Ie-5kFg" name="root start">
+      <bpmn2:outgoing>_H3-dUPLwEeijEq0Ie-5kFg</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:sequenceFlow id="_H3-dUPLwEeijEq0Ie-5kFg" sourceRef="_HfUXoPLuEeijEq0Ie-5kFg" targetRef="_HfUXofLuEeijEq0Ie-5kFg"/>
+    <bpmn2:exclusiveGateway id="_HfUXofLuEeijEq0Ie-5kFg" name="check illegal bond amount" default="_H3-dUfLwEeijEq0Ie-5kFg">
+      <bpmn2:incoming>_H3-dUPLwEeijEq0Ie-5kFg</bpmn2:incoming>
+      <bpmn2:outgoing>_H3-dUfLwEeijEq0Ie-5kFg</bpmn2:outgoing>
+      <bpmn2:outgoing>_H3-dUvLwEeijEq0Ie-5kFg</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="_H3-dUfLwEeijEq0Ie-5kFg" name="[default]" sourceRef="_HfUXofLuEeijEq0Ie-5kFg" targetRef="_HfUXovLuEeijEq0Ie-5kFg"/>
+    <bpmn2:sequenceFlow id="_H3-dUvLwEeijEq0Ie-5kFg" name="[illegal bond amount]" sourceRef="_HfUXofLuEeijEq0Ie-5kFg" targetRef="_HfUXpvLuEeijEq0Ie-5kFg">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="_H3-dU_LwEeijEq0Ie-5kFg" language="solidity">tenancyAgreement_bond > 4 * tenancyAgreement_weeklyRent</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:endEvent id="_HfUXpvLuEeijEq0Ie-5kFg" name="reject agreement">
+      <bpmn2:incoming>_H3-dUvLwEeijEq0Ie-5kFg</bpmn2:incoming>
+      <bpmn2:eventDefinitionRef>#id-reject-agreement</bpmn2:eventDefinitionRef>
+    </bpmn2:endEvent>
+    <bpmn2:parallelGateway id="_HfUXovLuEeijEq0Ie-5kFg" name="split">
+      <bpmn2:incoming>_H3-dUfLwEeijEq0Ie-5kFg</bpmn2:incoming>
+      <bpmn2:outgoing>_H3-dVPLwEeijEq0Ie-5kFg</bpmn2:outgoing>
+      <bpmn2:outgoing>_H3-dVfLwEeijEq0Ie-5kFg</bpmn2:outgoing>
+    </bpmn2:parallelGateway>
+    <bpmn2:sequenceFlow id="_H3-dVPLwEeijEq0Ie-5kFg" sourceRef="_HfUXovLuEeijEq0Ie-5kFg" targetRef="_w2AzAPLuEeijEq0Ie-5kFg"/>
+    <bpmn2:sequenceFlow id="_H3-dVfLwEeijEq0Ie-5kFg" sourceRef="_HfUXovLuEeijEq0Ie-5kFg" targetRef="_w2AzB_LuEeijEq0Ie-5kFg"/>
+    <bpmn2:choreographyTask id="_w2AzAPLuEeijEq0Ie-5kFg" name="pay bond" initiatingParticipantRef="#_2f--IPLsEeijEq0Ie-5kFg">
+      <bpmn2:incoming>_H3-dVPLwEeijEq0Ie-5kFg</bpmn2:incoming>
+      <bpmn2:outgoing>_H3-dVvLwEeijEq0Ie-5kFg</bpmn2:outgoing>
+      <bpmn2:participantRef>#_5SF5YfLsEeijEq0Ie-5kFg</bpmn2:participantRef>
+      <bpmn2:participantRef>#_2f--IPLsEeijEq0Ie-5kFg</bpmn2:participantRef>
+      <bpmn2:messageFlowRef>#_qZtTYPLtEeijEq0Ie-5kFg</bpmn2:messageFlowRef>
+    </bpmn2:choreographyTask>
+    <bpmn2:sequenceFlow id="_H3-dVvLwEeijEq0Ie-5kFg" sourceRef="_w2AzAPLuEeijEq0Ie-5kFg" targetRef="_HfUXo_LuEeijEq0Ie-5kFg"/>
+    <bpmn2:subChoreography id="_w2AzB_LuEeijEq0Ie-5kFg" name="regular rent payments" initiatingParticipantRef="#_2f-XEPLsEeijEq0Ie-5kFg">
+      <bpmn2:incoming>_H3-dVfLwEeijEq0Ie-5kFg</bpmn2:incoming>
+      <bpmn2:outgoing>_H3-dV_LwEeijEq0Ie-5kFg</bpmn2:outgoing>
+      <bpmn2:participantRef>#_5SF5YPLsEeijEq0Ie-5kFg</bpmn2:participantRef>
+      <bpmn2:participantRef>#_2f-XEPLsEeijEq0Ie-5kFg</bpmn2:participantRef>
+      <bpmn2:participantRef>#_2f--IPLsEeijEq0Ie-5kFg</bpmn2:participantRef>
+      <ac:ioSpecification xsi:type="bpmn2:tInputOutputSpecification" id="_q3KZgPLvEeijEq0Ie-5kFg">
+        <bpmn2:dataInput id="_q3KZgfLvEeijEq0Ie-5kFg" itemSubjectRef="#id-tenancy-agreement" name="tenancyAgreementInner"/>
+      </ac:ioSpecification>
+      <ac:dataInputAssociations xsi:type="bpmn2:tDataInputAssociation" id="_q3KZgvLvEeijEq0Ie-5kFg">
+        <bpmn2:sourceRef>_gtn9sfLvEeijEq0Ie-5kFg</bpmn2:sourceRef>
+        <bpmn2:targetRef>_q3KZgfLvEeijEq0Ie-5kFg</bpmn2:targetRef>
+      </ac:dataInputAssociations>
+      <bpmn2:startEvent id="_jMI8oPLxEeijEq0Ie-5kFg" name="start inner">
+        <bpmn2:outgoing>_msGcYPLxEeijEq0Ie-5kFg</bpmn2:outgoing>
+      </bpmn2:startEvent>
+      <bpmn2:sequenceFlow id="_msGcYPLxEeijEq0Ie-5kFg" sourceRef="_jMI8oPLxEeijEq0Ie-5kFg" targetRef="_jMI8ofLxEeijEq0Ie-5kFg"/>
+      <bpmn2:sequenceFlow id="_msGcZfLxEeijEq0Ie-5kFg" sourceRef="_jMI8o_LxEeijEq0Ie-5kFg" targetRef="_jMI8ofLxEeijEq0Ie-5kFg"/>
+      <bpmn2:exclusiveGateway id="_jMI8ofLxEeijEq0Ie-5kFg" name="inner merge">
+        <bpmn2:incoming>_msGcYPLxEeijEq0Ie-5kFg</bpmn2:incoming>
+        <bpmn2:incoming>_msGcZfLxEeijEq0Ie-5kFg</bpmn2:incoming>
+        <bpmn2:outgoing>_msGcYfLxEeijEq0Ie-5kFg</bpmn2:outgoing>
+      </bpmn2:exclusiveGateway>
+      <bpmn2:sequenceFlow id="_msGcYfLxEeijEq0Ie-5kFg" sourceRef="_jMI8ofLxEeijEq0Ie-5kFg" targetRef="_jMI8ovLxEeijEq0Ie-5kFg"/>
+      <bpmn2:eventBasedGateway id="_jMI8ovLxEeijEq0Ie-5kFg" name="inner pay rent or end">
+        <bpmn2:incoming>_msGcYfLxEeijEq0Ie-5kFg</bpmn2:incoming>
+        <bpmn2:outgoing>_msGcYvLxEeijEq0Ie-5kFg</bpmn2:outgoing>
+        <bpmn2:outgoing>_msGcY_LxEeijEq0Ie-5kFg</bpmn2:outgoing>
+      </bpmn2:eventBasedGateway>
+      <bpmn2:sequenceFlow id="_msGcYvLxEeijEq0Ie-5kFg" sourceRef="_jMI8ovLxEeijEq0Ie-5kFg" targetRef="_jMI8o_LxEeijEq0Ie-5kFg"/>
+      <bpmn2:choreographyTask id="_jMI8o_LxEeijEq0Ie-5kFg" name="pay rent" initiatingParticipantRef="#_2f--IPLsEeijEq0Ie-5kFg">
+        <bpmn2:incoming>_msGcYvLxEeijEq0Ie-5kFg</bpmn2:incoming>
+        <bpmn2:outgoing>_msGcZfLxEeijEq0Ie-5kFg</bpmn2:outgoing>
+        <bpmn2:participantRef>#_2f--IPLsEeijEq0Ie-5kFg</bpmn2:participantRef>
+        <bpmn2:participantRef>#_5SF5YPLsEeijEq0Ie-5kFg</bpmn2:participantRef>
+        <bpmn2:messageFlowRef>#_LfHtsPLxEeijEq0Ie-5kFg</bpmn2:messageFlowRef>
+      </bpmn2:choreographyTask>
+      <bpmn2:sequenceFlow id="_msGcY_LxEeijEq0Ie-5kFg" sourceRef="_jMI8ovLxEeijEq0Ie-5kFg" targetRef="_jMI8pPLxEeijEq0Ie-5kFg"/>
+      <bpmn2:choreographyTask id="_jMI8pPLxEeijEq0Ie-5kFg" name="end tenancy" initiatingParticipantRef="#_2f--IPLsEeijEq0Ie-5kFg">
+        <bpmn2:incoming>_msGcY_LxEeijEq0Ie-5kFg</bpmn2:incoming>
+        <bpmn2:outgoing>_msGcZPLxEeijEq0Ie-5kFg</bpmn2:outgoing>
+        <bpmn2:participantRef>#_2f--IPLsEeijEq0Ie-5kFg</bpmn2:participantRef>
+        <bpmn2:participantRef>#_5SF5YPLsEeijEq0Ie-5kFg</bpmn2:participantRef>
+        <bpmn2:messageFlowRef>#_LfHtsfLxEeijEq0Ie-5kFg</bpmn2:messageFlowRef>
+      </bpmn2:choreographyTask>
+      <bpmn2:sequenceFlow id="_msGcZPLxEeijEq0Ie-5kFg" sourceRef="_jMI8pPLxEeijEq0Ie-5kFg" targetRef="_jMI8pfLxEeijEq0Ie-5kFg"/>
+      <bpmn2:endEvent id="_jMI8pfLxEeijEq0Ie-5kFg" name="after end tenancy">
+        <bpmn2:incoming>_msGcZPLxEeijEq0Ie-5kFg</bpmn2:incoming>
+      </bpmn2:endEvent>
+    </bpmn2:subChoreography>
+    <bpmn2:sequenceFlow id="_H3-dV_LwEeijEq0Ie-5kFg" sourceRef="_w2AzB_LuEeijEq0Ie-5kFg" targetRef="_HfUXo_LuEeijEq0Ie-5kFg"/>
+    <bpmn2:parallelGateway id="_HfUXo_LuEeijEq0Ie-5kFg" name="merge">
+      <bpmn2:incoming>_H3-dVvLwEeijEq0Ie-5kFg</bpmn2:incoming>
+      <bpmn2:incoming>_H3-dV_LwEeijEq0Ie-5kFg</bpmn2:incoming>
+      <bpmn2:outgoing>_H3-dWPLwEeijEq0Ie-5kFg</bpmn2:outgoing>
+    </bpmn2:parallelGateway>
+    <bpmn2:sequenceFlow id="_H3-dWPLwEeijEq0Ie-5kFg" sourceRef="_HfUXo_LuEeijEq0Ie-5kFg" targetRef="_HfUXpPLuEeijEq0Ie-5kFg"/>
+    <bpmn2:eventBasedGateway id="_HfUXpPLuEeijEq0Ie-5kFg" name="maybe file claim">
+      <bpmn2:incoming>_H3-dWPLwEeijEq0Ie-5kFg</bpmn2:incoming>
+      <bpmn2:outgoing>_H3-dWfLwEeijEq0Ie-5kFg</bpmn2:outgoing>
+      <bpmn2:outgoing>_H3-dXPLwEeijEq0Ie-5kFg</bpmn2:outgoing>
+    </bpmn2:eventBasedGateway>
+    <bpmn2:sequenceFlow id="_H3-dWfLwEeijEq0Ie-5kFg" sourceRef="_HfUXpPLuEeijEq0Ie-5kFg" targetRef="_w2AzAfLuEeijEq0Ie-5kFg"/>
+    <bpmn2:choreographyTask id="_w2AzAfLuEeijEq0Ie-5kFg" name="release bond" initiatingParticipantRef="#_5SF5YPLsEeijEq0Ie-5kFg">
+      <bpmn2:incoming>_H3-dWfLwEeijEq0Ie-5kFg</bpmn2:incoming>
+      <bpmn2:outgoing>_H3-dWvLwEeijEq0Ie-5kFg</bpmn2:outgoing>
+      <bpmn2:participantRef>#_5SF5YPLsEeijEq0Ie-5kFg</bpmn2:participantRef>
+      <bpmn2:participantRef>#_5SF5YfLsEeijEq0Ie-5kFg</bpmn2:participantRef>
+      <bpmn2:messageFlowRef>#_qZtTavLtEeijEq0Ie-5kFg</bpmn2:messageFlowRef>
+    </bpmn2:choreographyTask>
+    <bpmn2:sequenceFlow id="_H3-dWvLwEeijEq0Ie-5kFg" sourceRef="_w2AzAfLuEeijEq0Ie-5kFg" targetRef="_w2AzAvLuEeijEq0Ie-5kFg"/>
+    <bpmn2:choreographyTask id="_w2AzAvLuEeijEq0Ie-5kFg" name="refund bond to tenant" initiatingParticipantRef="#_5SF5YfLsEeijEq0Ie-5kFg">
+      <bpmn2:incoming>_H3-dWvLwEeijEq0Ie-5kFg</bpmn2:incoming>
+      <bpmn2:outgoing>_H3-dW_LwEeijEq0Ie-5kFg</bpmn2:outgoing>
+      <bpmn2:participantRef>#_5SF5YfLsEeijEq0Ie-5kFg</bpmn2:participantRef>
+      <bpmn2:participantRef>#_2f--IPLsEeijEq0Ie-5kFg</bpmn2:participantRef>
+      <bpmn2:messageFlowRef>#_qZt6cPLtEeijEq0Ie-5kFg</bpmn2:messageFlowRef>
+    </bpmn2:choreographyTask>
+    <bpmn2:sequenceFlow id="_H3-dW_LwEeijEq0Ie-5kFg" sourceRef="_w2AzAvLuEeijEq0Ie-5kFg" targetRef="_HfU-sfLuEeijEq0Ie-5kFg"/>
+    <bpmn2:endEvent id="_HfU-sfLuEeijEq0Ie-5kFg" name="after transfer to tenant">
+      <bpmn2:incoming>_H3-dW_LwEeijEq0Ie-5kFg</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="_H3-dXPLwEeijEq0Ie-5kFg" sourceRef="_HfUXpPLuEeijEq0Ie-5kFg" targetRef="_w2AzA_LuEeijEq0Ie-5kFg"/>
+    <bpmn2:choreographyTask id="_w2AzA_LuEeijEq0Ie-5kFg" name="file claim for bond" initiatingParticipantRef="#_5SF5YPLsEeijEq0Ie-5kFg">
+      <bpmn2:incoming>_H3-dXPLwEeijEq0Ie-5kFg</bpmn2:incoming>
+      <bpmn2:outgoing>_H3-dXfLwEeijEq0Ie-5kFg</bpmn2:outgoing>
+      <bpmn2:participantRef>#_5SF5YPLsEeijEq0Ie-5kFg</bpmn2:participantRef>
+      <bpmn2:participantRef>#_5SF5YfLsEeijEq0Ie-5kFg</bpmn2:participantRef>
+      <bpmn2:messageFlowRef>#_qZtTYvLtEeijEq0Ie-5kFg</bpmn2:messageFlowRef>
+    </bpmn2:choreographyTask>
+    <bpmn2:sequenceFlow id="_H3-dXfLwEeijEq0Ie-5kFg" sourceRef="_w2AzA_LuEeijEq0Ie-5kFg" targetRef="_HfUXpfLuEeijEq0Ie-5kFg"/>
+    <bpmn2:eventBasedGateway id="_HfUXpfLuEeijEq0Ie-5kFg" name="maybe file dispute">
+      <bpmn2:incoming>_H3-dXfLwEeijEq0Ie-5kFg</bpmn2:incoming>
+      <bpmn2:outgoing>_H3-dXvLwEeijEq0Ie-5kFg</bpmn2:outgoing>
+      <bpmn2:outgoing>_H3-dYfLwEeijEq0Ie-5kFg</bpmn2:outgoing>
+    </bpmn2:eventBasedGateway>
+    <bpmn2:sequenceFlow id="_H3-dXvLwEeijEq0Ie-5kFg" sourceRef="_HfUXpfLuEeijEq0Ie-5kFg" targetRef="_w2AzBPLuEeijEq0Ie-5kFg"/>
+    <bpmn2:choreographyTask id="_w2AzBPLuEeijEq0Ie-5kFg" name="accept claim" initiatingParticipantRef="#_2f--IPLsEeijEq0Ie-5kFg">
+      <bpmn2:incoming>_H3-dXvLwEeijEq0Ie-5kFg</bpmn2:incoming>
+      <bpmn2:outgoing>_H3-dX_LwEeijEq0Ie-5kFg</bpmn2:outgoing>
+      <bpmn2:participantRef>#_5SF5YfLsEeijEq0Ie-5kFg</bpmn2:participantRef>
+      <bpmn2:participantRef>#_2f--IPLsEeijEq0Ie-5kFg</bpmn2:participantRef>
+      <bpmn2:messageFlowRef>#_qZtTZ_LtEeijEq0Ie-5kFg</bpmn2:messageFlowRef>
+    </bpmn2:choreographyTask>
+    <bpmn2:sequenceFlow id="_H3-dX_LwEeijEq0Ie-5kFg" sourceRef="_w2AzBPLuEeijEq0Ie-5kFg" targetRef="_w2AzBfLuEeijEq0Ie-5kFg"/>
+    <bpmn2:choreographyTask id="_w2AzBfLuEeijEq0Ie-5kFg" name="transfer bond to landlord" initiatingParticipantRef="#_5SF5YfLsEeijEq0Ie-5kFg">
+      <bpmn2:incoming>_H3-dX_LwEeijEq0Ie-5kFg</bpmn2:incoming>
+      <bpmn2:outgoing>_H3-dYPLwEeijEq0Ie-5kFg</bpmn2:outgoing>
+      <bpmn2:participantRef>#_5SF5YPLsEeijEq0Ie-5kFg</bpmn2:participantRef>
+      <bpmn2:participantRef>#_5SF5YfLsEeijEq0Ie-5kFg</bpmn2:participantRef>
+      <bpmn2:messageFlowRef>#_qZtTaPLtEeijEq0Ie-5kFg</bpmn2:messageFlowRef>
+    </bpmn2:choreographyTask>
+    <bpmn2:sequenceFlow id="_H3-dYPLwEeijEq0Ie-5kFg" sourceRef="_w2AzBfLuEeijEq0Ie-5kFg" targetRef="_HfU-svLuEeijEq0Ie-5kFg"/>
+    <bpmn2:endEvent id="_HfU-svLuEeijEq0Ie-5kFg" name="after transfer to landlord">
+      <bpmn2:incoming>_H3-dYPLwEeijEq0Ie-5kFg</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="_H3-dYfLwEeijEq0Ie-5kFg" sourceRef="_HfUXpfLuEeijEq0Ie-5kFg" targetRef="_w2AzBvLuEeijEq0Ie-5kFg"/>
+    <bpmn2:choreographyTask id="_w2AzBvLuEeijEq0Ie-5kFg" name="file dispute" initiatingParticipantRef="#_2f--IPLsEeijEq0Ie-5kFg">
+      <bpmn2:incoming>_H3-dYfLwEeijEq0Ie-5kFg</bpmn2:incoming>
+      <bpmn2:outgoing>_H3-dYvLwEeijEq0Ie-5kFg</bpmn2:outgoing>
+      <bpmn2:participantRef>#_5SF5YfLsEeijEq0Ie-5kFg</bpmn2:participantRef>
+      <bpmn2:participantRef>#_2f--IPLsEeijEq0Ie-5kFg</bpmn2:participantRef>
+      <bpmn2:messageFlowRef>#_qZtTZPLtEeijEq0Ie-5kFg</bpmn2:messageFlowRef>
+      <bpmn2:messageFlowRef>#_qZtTZfLtEeijEq0Ie-5kFg</bpmn2:messageFlowRef>
+    </bpmn2:choreographyTask>
+    <bpmn2:sequenceFlow id="_H3-dYvLwEeijEq0Ie-5kFg" sourceRef="_w2AzBvLuEeijEq0Ie-5kFg" targetRef="_HfU-sPLuEeijEq0Ie-5kFg"/>
+    <bpmn2:endEvent id="_HfU-sPLuEeijEq0Ie-5kFg" name="start external arbitration">
+      <bpmn2:incoming>_H3-dYvLwEeijEq0Ie-5kFg</bpmn2:incoming>
+      <bpmn2:eventDefinitionRef>#id-start-external-arbitration</bpmn2:eventDefinitionRef>
+    </bpmn2:endEvent>
+    <ac:ioSpecification xsi:type="bpmn2:tInputOutputSpecification" id="id-root-io-spec">
+      <bpmn2:dataInput id="_gtn9sfLvEeijEq0Ie-5kFg" itemSubjectRef="#id-tenancy-agreement" name="tenancyAgreement"/>
+    </ac:ioSpecification>
+  </bpmn2:choreography>
+  <bpmn2:message id="_qZtTY_LtEeijEq0Ie-5kFg" name="ack"/>
+  <bpmn2:message id="_qZtTYfLtEeijEq0Ie-5kFg" itemRef="#id-payment-receipt" name="paymentReceipt"/>
+  <bpmn2:message id="_qZtTZvLtEeijEq0Ie-5kFg" itemRef="#id-dispute-no" name="disputeNo"/>
+  <bpmn2:message id="_qZtTafLtEeijEq0Ie-5kFg" itemRef="#id-transfer-details" name="transferDetailsTenant"/>
+  <bpmn2:message id="_qZtTafLtEeijEq0Ie-5kFg2d" itemRef="#id-transfer-details" name="transferDetailsLandlord"/>
+  <bpmn2:itemDefinition id="id-payment-receipt" structureRef="[[&quot;uint32&quot;,&quot;receiptID&quot;]]"/>
+  <bpmn2:itemDefinition id="id-transfer-details" structureRef="[[&quot;int32&quot;,&quot;timestamp&quot;],[&quot;uint32&quot;,&quot;transferID&quot;]]"/>
+  <bpmn2:itemDefinition id="id-dispute-no" structureRef="[[&quot;uint32&quot;,&quot;disputeNo&quot;]]"/>
+  <bpmn2:itemDefinition id="id-tenancy-agreement" structureRef="[[&quot;uint16&quot;,&quot;bond&quot;],[&quot;uint16&quot;,&quot;weeklyRent&quot;]]"/>
+  <bpmn2:errorEventDefinition id="id-reject-agreement"/>
+  <bpmn2:escalationEventDefinition id="id-start-external-arbitration"/>
+</bpmn2:definitions>

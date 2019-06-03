@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ac="http://hpi.de/ac" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" id="_uZ-VEHUQEeih-ZEz5QD2Pg">
+  <bpmn2:choreography id="id_root">
+    <ac:neutralEntity xsi:type="bpmn2:tParticipant" id="_nbw64HUSEeih-ZEz5QD2Pg" name="Neutral"/>
+    <bpmn2:participant id="_nbw64XUSEeih-ZEz5QD2Pg" name="Farmer"/>
+    <bpmn2:participant id="_nbw64nUSEeih-ZEz5QD2Pg" name="Buyer"/>
+    <bpmn2:participant id="_nbw643USEeih-ZEz5QD2Pg" name="EscrowAgent"/>
+    <bpmn2:participant id="_nbw65HUSEeih-ZEz5QD2Pg" name="Silo"/>
+    <bpmn2:participant id="Laboratory" name="Laboratory"/>
+    <bpmn2:messageFlow id="_nbw65XUSEeih-ZEz5QD2Pg" messageRef="#_7p7SwHUREeih-ZEz5QD2Pg" name="ackFarmer" sourceRef="#_nbw64XUSEeih-ZEz5QD2Pg" targetRef="#_nbw64HUSEeih-ZEz5QD2Pg"/>
+    <bpmn2:messageFlow id="_nbw65nUSEeih-ZEz5QD2Pg" messageRef="#_7p7SwXUREeih-ZEz5QD2Pg" name="inboundWeightSilo" sourceRef="#_nbw65HUSEeih-ZEz5QD2Pg" targetRef="#_nbw64HUSEeih-ZEz5QD2Pg"/>
+    <bpmn2:messageFlow id="_nbw653USEeih-ZEz5QD2Pg" messageRef="#_7p7SwnUREeih-ZEz5QD2Pg" name="outboundWeightSilo" sourceRef="#_nbw65HUSEeih-ZEz5QD2Pg" targetRef="#_nbw64HUSEeih-ZEz5QD2Pg"/>
+    <bpmn2:messageFlow id="_nbxh8HUSEeih-ZEz5QD2Pg" messageRef="#_7p7Sw3UREeih-ZEz5QD2Pg" name="analysisResultLab" sourceRef="#Laboratory" targetRef="#_nbw64HUSEeih-ZEz5QD2Pg"/>
+    <bpmn2:startEvent id="_6do-cHUUEeih-ZEz5QD2Pg" name="root">
+      <bpmn2:outgoing>_6do-cXUUEeih-ZEz5QD2Pg</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:sequenceFlow id="_6do-cXUUEeih-ZEz5QD2Pg" sourceRef="_6do-cHUUEeih-ZEz5QD2Pg" targetRef="_6do-cnUUEeih-ZEz5QD2Pg"/>
+    <bpmn2:choreographyTask id="_6do-cnUUEeih-ZEz5QD2Pg" name="confirm title lock" initiatingParticipantRef="#_nbw64XUSEeih-ZEz5QD2Pg">
+      <bpmn2:incoming>_6do-cXUUEeih-ZEz5QD2Pg</bpmn2:incoming>
+      <bpmn2:outgoing>_6do-c3UUEeih-ZEz5QD2Pg</bpmn2:outgoing>
+      <bpmn2:participantRef>#_nbw64XUSEeih-ZEz5QD2Pg</bpmn2:participantRef>
+      <bpmn2:participantRef>#_nbw64HUSEeih-ZEz5QD2Pg</bpmn2:participantRef>
+      <bpmn2:messageFlowRef>#_nbw65XUSEeih-ZEz5QD2Pg</bpmn2:messageFlowRef>
+    </bpmn2:choreographyTask>
+    <bpmn2:sequenceFlow id="_6do-c3UUEeih-ZEz5QD2Pg" sourceRef="_6do-cnUUEeih-ZEz5QD2Pg" targetRef="_6do-dHUUEeih-ZEz5QD2Pg"/>
+    <bpmn2:exclusiveGateway id="_6do-dHUUEeih-ZEz5QD2Pg" name="check title" default="_6do-dnUUEeih-ZEz5QD2Pg">
+      <bpmn2:incoming>_6do-c3UUEeih-ZEz5QD2Pg</bpmn2:incoming>
+      <bpmn2:outgoing>_6do-dXUUEeih-ZEz5QD2Pg</bpmn2:outgoing>
+      <bpmn2:outgoing>_6do-dnUUEeih-ZEz5QD2Pg</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="_6do-dnUUEeih-ZEz5QD2Pg" name="title valid [default]" sourceRef="_6do-dHUUEeih-ZEz5QD2Pg" targetRef="_6do-d3UUEeih-ZEz5QD2Pg"/>
+    <bpmn2:sequenceFlow id="_6do-dXUUEeih-ZEz5QD2Pg" name="title invalid" sourceRef="_6do-dHUUEeih-ZEz5QD2Pg" targetRef="_6do-eHUUEeih-ZEz5QD2Pg">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="_6do-eXUUEeih-ZEz5QD2Pg" language="solidity">!grainTitle_addr.call(bytes4(keccak256(&quot;amTrustee()&quot;)))</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:endEvent id="_6do-eHUUEeih-ZEz5QD2Pg" name="title is invalid">
+      <bpmn2:incoming>_6do-dXUUEeih-ZEz5QD2Pg</bpmn2:incoming>
+      <bpmn2:eventDefinitionRef>#id_titleIsInvalid</bpmn2:eventDefinitionRef>
+    </bpmn2:endEvent>
+    <bpmn2:scriptTask id="_6do-d3UUEeih-ZEz5QD2Pg" name="calculate deposit amount" scriptFormat="solidity">
+      <bpmn2:incoming>_6do-dnUUEeih-ZEz5QD2Pg</bpmn2:incoming>
+      <bpmn2:outgoing>_6do-enUUEeih-ZEz5QD2Pg</bpmn2:outgoing>
+      <bpmn2:script>depositAmount_amount = (orderDetails_tonnes + orderDetails_tolerance) * orderDetails_price;</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:dataObject id="_6do-e3UUEeih-ZEz5QD2Pg" name="depositAmount" itemSubjectRef="#id_Amount"/>
+    <bpmn2:sequenceFlow id="_6do-enUUEeih-ZEz5QD2Pg" sourceRef="_6do-d3UUEeih-ZEz5QD2Pg" targetRef="id_call-deposit-into-escrow"/>
+    <bpmn2:callChoreography id="id_call-deposit-into-escrow" name="deposit into escrow" initiatingParticipantRef="#_nbw64HUSEeih-ZEz5QD2Pg" calledChoreographyRef="#id_deposit-into-escrow">
+      <bpmn2:incoming>_6do-enUUEeih-ZEz5QD2Pg</bpmn2:incoming>
+      <bpmn2:outgoing>_6do-fHUUEeih-ZEz5QD2Pg</bpmn2:outgoing>
+      <ac:boundaryEventRefs>#_6do-fXUUEeih-ZEz5QD2Pg</ac:boundaryEventRefs>
+      <bpmn2:participantRef>#_nbw64nUSEeih-ZEz5QD2Pg</bpmn2:participantRef>
+      <bpmn2:participantRef>#_nbw643USEeih-ZEz5QD2Pg</bpmn2:participantRef>
+      <bpmn2:participantRef>#_nbw64HUSEeih-ZEz5QD2Pg</bpmn2:participantRef>
+      <ac:ioSpecification xsi:type="bpmn2:tInputOutputSpecification" id="_6do-fnUUEeih-ZEz5QD2Pg">
+        <bpmn2:dataInput id="_6do-f3UUEeih-ZEz5QD2Pg" itemSubjectRef="#id_Amount" name="inputDepositAmount"/>
+      </ac:ioSpecification>
+      <ac:dataInputAssociations xsi:type="bpmn2:tDataInputAssociation" id="_6do-gHUUEeih-ZEz5QD2Pg">
+        <bpmn2:sourceRef>_6do-e3UUEeih-ZEz5QD2Pg</bpmn2:sourceRef>
+        <bpmn2:targetRef>_6do-f3UUEeih-ZEz5QD2Pg</bpmn2:targetRef>
+      </ac:dataInputAssociations>
+      <bpmn2:participantAssociation id="_6do-gXUUEeih-ZEz5QD2Pg">
+        <bpmn2:innerParticipantRef>#_6do-gnUUEeih-ZEz5QD2Pg</bpmn2:innerParticipantRef>
+        <bpmn2:outerParticipantRef>#_nbw64nUSEeih-ZEz5QD2Pg</bpmn2:outerParticipantRef>
+      </bpmn2:participantAssociation>
+      <bpmn2:participantAssociation id="_6do-g3UUEeih-ZEz5QD2Pg">
+        <bpmn2:innerParticipantRef>#_6do-hHUUEeih-ZEz5QD2Pg</bpmn2:innerParticipantRef>
+        <bpmn2:outerParticipantRef>#_nbw643USEeih-ZEz5QD2Pg</bpmn2:outerParticipantRef>
+      </bpmn2:participantAssociation>
+      <bpmn2:participantAssociation id="_6do-hXUUEeih-ZEz5QD2Pg">
+        <bpmn2:innerParticipantRef>#_6do-hnUUEeih-ZEz5QD2Pg</bpmn2:innerParticipantRef>
+        <bpmn2:outerParticipantRef>#_nbw64HUSEeih-ZEz5QD2Pg</bpmn2:outerParticipantRef>
+      </bpmn2:participantAssociation>
+    </bpmn2:callChoreography>
+    <bpmn2:boundaryEvent id="_6do-fXUUEeih-ZEz5QD2Pg" name="deposit failed" ac:attachedChoreographyRef="id_call-deposit-into-escrow">
+      <bpmn2:outgoing>_6do-h3UUEeih-ZEz5QD2Pg</bpmn2:outgoing>
+    </bpmn2:boundaryEvent>
+    <bpmn2:sequenceFlow id="_6do-h3UUEeih-ZEz5QD2Pg" sourceRef="_6do-fXUUEeih-ZEz5QD2Pg" targetRef="_6do-iHUUEeih-ZEz5QD2Pg"/>
+    <bpmn2:scriptTask id="_6do-iHUUEeih-ZEz5QD2Pg" name="unlock title" scriptFormat="solidity">
+      <bpmn2:incoming>_6do-h3UUEeih-ZEz5QD2Pg</bpmn2:incoming>
+      <bpmn2:outgoing>_6do-iXUUEeih-ZEz5QD2Pg</bpmn2:outgoing>
+      <bpmn2:script>grainTitle_addr.call(bytes4(keccak256(&quot;unlock()&quot;)));</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="_6do-iXUUEeih-ZEz5QD2Pg" sourceRef="_6do-iHUUEeih-ZEz5QD2Pg" targetRef="_6do-inUUEeih-ZEz5QD2Pg"/>
+    <bpmn2:endEvent id="_6do-inUUEeih-ZEz5QD2Pg" name="deposit failed">
+      <bpmn2:incoming>_6do-iXUUEeih-ZEz5QD2Pg</bpmn2:incoming>
+      <bpmn2:eventDefinitionRef>#id_depositFailed</bpmn2:eventDefinitionRef>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="_6do-fHUUEeih-ZEz5QD2Pg" sourceRef="id_call-deposit-into-escrow" targetRef="id_deliver-order"/>
+    <bpmn2:subChoreography id="id_deliver-order" name="deliver order" initiatingParticipantRef="#_nbw64HUSEeih-ZEz5QD2Pg">
+      <bpmn2:incoming>_6do-fHUUEeih-ZEz5QD2Pg</bpmn2:incoming>
+      <bpmn2:outgoing>_6do-i3UUEeih-ZEz5QD2Pg</bpmn2:outgoing>
+      <bpmn2:participantRef>#_nbw64XUSEeih-ZEz5QD2Pg</bpmn2:participantRef>
+      <bpmn2:participantRef>#Laboratory</bpmn2:participantRef>
+      <bpmn2:participantRef>#_nbw65HUSEeih-ZEz5QD2Pg</bpmn2:participantRef>
+      <bpmn2:participantRef>#_nbw64HUSEeih-ZEz5QD2Pg</bpmn2:participantRef>
+      <ac:ioSpecification xsi:type="bpmn2:tInputOutputSpecification" id="_ON5AYHUWEeih-ZEz5QD2Pg">
+        <bpmn2:dataOutput id="_ON5AYXUWEeih-ZEz5QD2Pg" itemSubjectRef="#id_DeliveryDetails" name="summary"/>
+      </ac:ioSpecification>
+      <ac:dataOutputAssociations xsi:type="bpmn2:tDataOutputAssociation" id="_ON5AYnUWEeih-ZEz5QD2Pg">
+        <bpmn2:sourceRef>_ON5AYXUWEeih-ZEz5QD2Pg</bpmn2:sourceRef>
+        <bpmn2:targetRef>_ON5AY3UWEeih-ZEz5QD2Pg</bpmn2:targetRef>
+      </ac:dataOutputAssociations>
+      <bpmn2:startEvent id="_AkDtoHUWEeih-ZEz5QD2Pg" name="deliver order">
+        <bpmn2:outgoing>_AkDtoXUWEeih-ZEz5QD2Pg</bpmn2:outgoing>
+      </bpmn2:startEvent>
+      <bpmn2:sequenceFlow id="_AkDtoXUWEeih-ZEz5QD2Pg" sourceRef="_AkDtoHUWEeih-ZEz5QD2Pg" targetRef="_AkDtonUWEeih-ZEz5QD2Pg"/>
+      <bpmn2:choreographyTask id="_AkDtonUWEeih-ZEz5QD2Pg" name="weigh truck inbound" initiatingParticipantRef="#_nbw65HUSEeih-ZEz5QD2Pg">
+        <bpmn2:incoming>_AkDtoXUWEeih-ZEz5QD2Pg</bpmn2:incoming>
+        <bpmn2:outgoing>_AkDto3UWEeih-ZEz5QD2Pg</bpmn2:outgoing>
+        <bpmn2:participantRef>#_nbw64HUSEeih-ZEz5QD2Pg</bpmn2:participantRef>
+        <bpmn2:participantRef>#_nbw65HUSEeih-ZEz5QD2Pg</bpmn2:participantRef>
+        <bpmn2:messageFlowRef>#_nbw65nUSEeih-ZEz5QD2Pg</bpmn2:messageFlowRef>
+      </bpmn2:choreographyTask>
+      <bpmn2:sequenceFlow id="_AkDto3UWEeih-ZEz5QD2Pg" sourceRef="_AkDtonUWEeih-ZEz5QD2Pg" targetRef="_AkDtpHUWEeih-ZEz5QD2Pg"/>
+      <bpmn2:parallelGateway id="_AkDtpHUWEeih-ZEz5QD2Pg" name="deliver split">
+        <bpmn2:incoming>_AkDto3UWEeih-ZEz5QD2Pg</bpmn2:incoming>
+        <bpmn2:outgoing>_AkDtpXUWEeih-ZEz5QD2Pg</bpmn2:outgoing>
+        <bpmn2:outgoing>_AkDtpnUWEeih-ZEz5QD2Pg</bpmn2:outgoing>
+      </bpmn2:parallelGateway>
+      <bpmn2:sequenceFlow id="_AkDtpXUWEeih-ZEz5QD2Pg" sourceRef="_AkDtpHUWEeih-ZEz5QD2Pg" targetRef="_AkDtp3UWEeih-ZEz5QD2Pg"/>
+      <bpmn2:sequenceFlow id="_AkDtpnUWEeih-ZEz5QD2Pg" sourceRef="_AkDtpHUWEeih-ZEz5QD2Pg" targetRef="_AkDtqHUWEeih-ZEz5QD2Pg"/>
+      <bpmn2:choreographyTask id="_AkDtp3UWEeih-ZEz5QD2Pg" name="weigh truck outbound" initiatingParticipantRef="#_nbw65HUSEeih-ZEz5QD2Pg">
+        <bpmn2:incoming>_AkDtpXUWEeih-ZEz5QD2Pg</bpmn2:incoming>
+        <bpmn2:outgoing>_AkDtqXUWEeih-ZEz5QD2Pg</bpmn2:outgoing>
+        <bpmn2:participantRef>#_nbw64HUSEeih-ZEz5QD2Pg</bpmn2:participantRef>
+        <bpmn2:participantRef>#_nbw65HUSEeih-ZEz5QD2Pg</bpmn2:participantRef>
+        <bpmn2:messageFlowRef>#_nbw653USEeih-ZEz5QD2Pg</bpmn2:messageFlowRef>
+      </bpmn2:choreographyTask>
+      <bpmn2:sequenceFlow id="_AkDtqXUWEeih-ZEz5QD2Pg" sourceRef="_AkDtp3UWEeih-ZEz5QD2Pg" targetRef="_AkDtqnUWEeih-ZEz5QD2Pg"/>
+      <bpmn2:choreographyTask id="_AkDtqHUWEeih-ZEz5QD2Pg" name="analyze sample" initiatingParticipantRef="#Laboratory">
+        <bpmn2:incoming>_AkDtpnUWEeih-ZEz5QD2Pg</bpmn2:incoming>
+        <bpmn2:outgoing>_AkDtq3UWEeih-ZEz5QD2Pg</bpmn2:outgoing>
+        <bpmn2:participantRef>#Laboratory</bpmn2:participantRef>
+        <bpmn2:participantRef>#_nbw64HUSEeih-ZEz5QD2Pg</bpmn2:participantRef>
+        <bpmn2:messageFlowRef>#_nbxh8HUSEeih-ZEz5QD2Pg</bpmn2:messageFlowRef>
+      </bpmn2:choreographyTask>
+      <bpmn2:sequenceFlow id="_AkDtq3UWEeih-ZEz5QD2Pg" sourceRef="_AkDtqHUWEeih-ZEz5QD2Pg" targetRef="_AkDtqnUWEeih-ZEz5QD2Pg"/>
+      <bpmn2:parallelGateway id="_AkDtqnUWEeih-ZEz5QD2Pg" name="deliver join">
+        <bpmn2:incoming>_AkDtqXUWEeih-ZEz5QD2Pg</bpmn2:incoming>
+        <bpmn2:incoming>_AkDtq3UWEeih-ZEz5QD2Pg</bpmn2:incoming>
+        <bpmn2:outgoing>_AkDtrHUWEeih-ZEz5QD2Pg</bpmn2:outgoing>
+      </bpmn2:parallelGateway>
+      <bpmn2:sequenceFlow id="_AkDtrHUWEeih-ZEz5QD2Pg" sourceRef="_AkDtqnUWEeih-ZEz5QD2Pg" targetRef="_AkDtrXUWEeih-ZEz5QD2Pg"/>
+      <bpmn2:scriptTask id="_AkDtrXUWEeih-ZEz5QD2Pg" name="calculate summary" scriptFormat="solidity">
+        <bpmn2:incoming>_AkDtrHUWEeih-ZEz5QD2Pg</bpmn2:incoming>
+        <bpmn2:outgoing>_AkDtrnUWEeih-ZEz5QD2Pg</bpmn2:outgoing>
+        <bpmn2:script>summary_grade = analysisResult_grade; summary_tonnes = inboundWeight_tonnes - outboundWeight_tonnes;</bpmn2:script>
+      </bpmn2:scriptTask>
+      <bpmn2:sequenceFlow id="_AkDtrnUWEeih-ZEz5QD2Pg" sourceRef="_AkDtrXUWEeih-ZEz5QD2Pg" targetRef="_AkDtr3UWEeih-ZEz5QD2Pg"/>
+      <bpmn2:endEvent id="_AkDtr3UWEeih-ZEz5QD2Pg" name="deliver order">
+        <bpmn2:incoming>_AkDtrnUWEeih-ZEz5QD2Pg</bpmn2:incoming>
+      </bpmn2:endEvent>
+    </bpmn2:subChoreography>
+    <bpmn2:dataObject id="_ON5AY3UWEeih-ZEz5QD2Pg" name="summary" itemSubjectRef="#id_DeliveryDetails"/>
+    <bpmn2:sequenceFlow id="_6do-i3UUEeih-ZEz5QD2Pg" sourceRef="id_deliver-order" targetRef="_BbkH8HUXEeih-ZEz5QD2Pg"/>
+    <bpmn2:exclusiveGateway id="_BbkH8HUXEeih-ZEz5QD2Pg" name="check summary" default="_BbkH8nUXEeih-ZEz5QD2Pg">
+      <bpmn2:incoming>_6do-i3UUEeih-ZEz5QD2Pg</bpmn2:incoming>
+      <bpmn2:outgoing>_BbkH8XUXEeih-ZEz5QD2Pg</bpmn2:outgoing>
+      <bpmn2:outgoing>_BbkH8nUXEeih-ZEz5QD2Pg</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="_BbkH8XUXEeih-ZEz5QD2Pg" name="summary match" sourceRef="_BbkH8HUXEeih-ZEz5QD2Pg" targetRef="_BbkH9nUXEeih-ZEz5QD2Pg">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="_jgipMHUXEeih-ZEz5QD2Pg" language="solidity">(summary_tonnes >= orderDetails_tonnes - orderDetails_tolerance) &amp;&amp; (summary_tonnes &lt;= orderDetails_tonnes + orderDetails_tolerance) &amp;&amp; (summary_grade >= orderDetails_grade)</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="_BbkH8nUXEeih-ZEz5QD2Pg" name="summary mismatch [default]" sourceRef="_BbkH8HUXEeih-ZEz5QD2Pg" targetRef="_BbkH83UXEeih-ZEz5QD2Pg"/>
+    <bpmn2:scriptTask id="_BbkH83UXEeih-ZEz5QD2Pg" name="transfer title to GTA" scriptFormat="solidity">
+      <bpmn2:incoming>_BbkH8nUXEeih-ZEz5QD2Pg</bpmn2:incoming>
+      <bpmn2:outgoing>_BbkH9HUXEeih-ZEz5QD2Pg</bpmn2:outgoing>
+      <bpmn2:script>grainTitle_addr.call(bytes4(keccak256(&quot;assign(address)&quot;)), 0x0);</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="_BbkH9HUXEeih-ZEz5QD2Pg" sourceRef="_BbkH83UXEeih-ZEz5QD2Pg" targetRef="_BbkH9XUXEeih-ZEz5QD2Pg"/>
+    <bpmn2:endEvent id="_BbkH9XUXEeih-ZEz5QD2Pg" name="start GTA arbitration">
+      <bpmn2:incoming>_BbkH9HUXEeih-ZEz5QD2Pg</bpmn2:incoming>
+      <bpmn2:eventDefinitionRef>#id_startGtaArbitration</bpmn2:eventDefinitionRef>
+    </bpmn2:endEvent>
+    <bpmn2:scriptTask id="_BbkH9nUXEeih-ZEz5QD2Pg" name="calculate payment and refund" scriptFormat="solidity">
+      <bpmn2:incoming>_BbkH8XUXEeih-ZEz5QD2Pg</bpmn2:incoming>
+      <bpmn2:outgoing>_BbkH93UXEeih-ZEz5QD2Pg</bpmn2:outgoing>
+      <bpmn2:script>payment_amount = summary_tonnes * orderDetails_price; refund_amount = depositAmount_amount - payment_amount;</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="_BbkH93UXEeih-ZEz5QD2Pg" sourceRef="_BbkH9nUXEeih-ZEz5QD2Pg" targetRef="_BbkH-HUXEeih-ZEz5QD2Pg"/>
+    <bpmn2:parallelGateway id="_BbkH-HUXEeih-ZEz5QD2Pg" name="payment split">
+      <bpmn2:incoming>_BbkH93UXEeih-ZEz5QD2Pg</bpmn2:incoming>
+      <bpmn2:outgoing>_BbkH-XUXEeih-ZEz5QD2Pg</bpmn2:outgoing>
+      <bpmn2:outgoing>_BbkH-nUXEeih-ZEz5QD2Pg</bpmn2:outgoing>
+    </bpmn2:parallelGateway>
+    <bpmn2:sequenceFlow id="_BbkH-XUXEeih-ZEz5QD2Pg" sourceRef="_BbkH-HUXEeih-ZEz5QD2Pg" targetRef="_BbkH-3UXEeih-ZEz5QD2Pg"/>
+    <bpmn2:sequenceFlow id="_BbkH-nUXEeih-ZEz5QD2Pg" sourceRef="_BbkH-HUXEeih-ZEz5QD2Pg" targetRef="_BbkH_XUXEeih-ZEz5QD2Pg"/>
+    <bpmn2:dataObject id="_I0aIUHUYEeih-ZEz5QD2Pg" name="refund" itemSubjectRef="#id_Amount"/>
+    <bpmn2:callChoreography id="_BbkH-3UXEeih-ZEz5QD2Pg" name="withdraw refund" initiatingParticipantRef="#_nbw64HUSEeih-ZEz5QD2Pg" calledChoreographyRef="#id_withdraw-from-escrow">
+      <bpmn2:incoming>_BbkH-XUXEeih-ZEz5QD2Pg</bpmn2:incoming>
+      <bpmn2:outgoing>_BbkH_HUXEeih-ZEz5QD2Pg</bpmn2:outgoing>
+      <bpmn2:participantRef>#_nbw64nUSEeih-ZEz5QD2Pg</bpmn2:participantRef>
+      <bpmn2:participantRef>#_nbw643USEeih-ZEz5QD2Pg</bpmn2:participantRef>
+      <bpmn2:participantRef>#_nbw64HUSEeih-ZEz5QD2Pg</bpmn2:participantRef>
+      <ac:ioSpecification xsi:type="bpmn2:tInputOutputSpecification" id="_I0aIUXUYEeih-ZEz5QD2Pg">
+        <bpmn2:dataInput id="_I0aIUnUYEeih-ZEz5QD2Pg" itemSubjectRef="#id_Amount" name="inputRefund"/>
+      </ac:ioSpecification>
+      <ac:dataInputAssociations xsi:type="bpmn2:tDataInputAssociation" id="_I0aIU3UYEeih-ZEz5QD2Pg">
+        <bpmn2:sourceRef>_I0aIUHUYEeih-ZEz5QD2Pg</bpmn2:sourceRef>
+        <bpmn2:targetRef>_I0aIUnUYEeih-ZEz5QD2Pg</bpmn2:targetRef>
+      </ac:dataInputAssociations>
+      <bpmn2:participantAssociation id="_I0aIVHUYEeih-ZEz5QD2Pg">
+        <bpmn2:innerParticipantRef>#_BbkIBXUXEeih-ZEz5QD2Pg</bpmn2:innerParticipantRef>
+        <bpmn2:outerParticipantRef>#_nbw643USEeih-ZEz5QD2Pg</bpmn2:outerParticipantRef>
+      </bpmn2:participantAssociation>
+      <bpmn2:participantAssociation id="_I0aIVXUYEeih-ZEz5QD2Pg">
+        <bpmn2:innerParticipantRef>#_BbkIBHUXEeih-ZEz5QD2Pg</bpmn2:innerParticipantRef>
+        <bpmn2:outerParticipantRef>#_nbw64HUSEeih-ZEz5QD2Pg</bpmn2:outerParticipantRef>
+      </bpmn2:participantAssociation>
+      <bpmn2:participantAssociation id="_I0aIVnUYEeih-ZEz5QD2Pg">
+        <bpmn2:innerParticipantRef>#_BbkIBnUXEeih-ZEz5QD2Pg</bpmn2:innerParticipantRef>
+        <bpmn2:outerParticipantRef>#_nbw64nUSEeih-ZEz5QD2Pg</bpmn2:outerParticipantRef>
+      </bpmn2:participantAssociation>
+    </bpmn2:callChoreography>
+    <bpmn2:sequenceFlow id="_BbkH_HUXEeih-ZEz5QD2Pg" sourceRef="_BbkH-3UXEeih-ZEz5QD2Pg" targetRef="_BbkH_3UXEeih-ZEz5QD2Pg"/>
+    <bpmn2:dataObject id="_I0aIV3UYEeih-ZEz5QD2Pg" name="payment" itemSubjectRef="#id_Amount"/>
+    <bpmn2:callChoreography id="_BbkH_XUXEeih-ZEz5QD2Pg" name="withdraw payment" initiatingParticipantRef="#_nbw64HUSEeih-ZEz5QD2Pg" calledChoreographyRef="#id_withdraw-from-escrow">
+      <bpmn2:incoming>_BbkH-nUXEeih-ZEz5QD2Pg</bpmn2:incoming>
+      <bpmn2:outgoing>_BbkH_nUXEeih-ZEz5QD2Pg</bpmn2:outgoing>
+      <bpmn2:participantRef>#_nbw643USEeih-ZEz5QD2Pg</bpmn2:participantRef>
+      <bpmn2:participantRef>#_nbw64XUSEeih-ZEz5QD2Pg</bpmn2:participantRef>
+      <bpmn2:participantRef>#_nbw64HUSEeih-ZEz5QD2Pg</bpmn2:participantRef>
+      <ac:ioSpecification xsi:type="bpmn2:tInputOutputSpecification" id="_I0aIWHUYEeih-ZEz5QD2Pg">
+        <bpmn2:dataInput id="_I0aIWXUYEeih-ZEz5QD2Pg" itemSubjectRef="#id_Amount" name="inputPayment"/>
+      </ac:ioSpecification>
+      <ac:dataInputAssociations xsi:type="bpmn2:tDataInputAssociation" id="_I0aIWnUYEeih-ZEz5QD2Pg">
+        <bpmn2:sourceRef>_I0aIV3UYEeih-ZEz5QD2Pg</bpmn2:sourceRef>
+        <bpmn2:targetRef>_I0aIWXUYEeih-ZEz5QD2Pg</bpmn2:targetRef>
+      </ac:dataInputAssociations>
+      <bpmn2:participantAssociation id="_I0aIW3UYEeih-ZEz5QD2Pg">
+        <bpmn2:innerParticipantRef>#_BbkIBXUXEeih-ZEz5QD2Pg</bpmn2:innerParticipantRef>
+        <bpmn2:outerParticipantRef>#_nbw643USEeih-ZEz5QD2Pg</bpmn2:outerParticipantRef>
+      </bpmn2:participantAssociation>
+      <bpmn2:participantAssociation id="_I0aIXHUYEeih-ZEz5QD2Pg">
+        <bpmn2:innerParticipantRef>#_BbkIBHUXEeih-ZEz5QD2Pg</bpmn2:innerParticipantRef>
+        <bpmn2:outerParticipantRef>#_nbw64HUSEeih-ZEz5QD2Pg</bpmn2:outerParticipantRef>
+      </bpmn2:participantAssociation>
+      <bpmn2:participantAssociation id="_I0aIXXUYEeih-ZEz5QD2Pg">
+        <bpmn2:innerParticipantRef>#_BbkIBnUXEeih-ZEz5QD2Pg</bpmn2:innerParticipantRef>
+        <bpmn2:outerParticipantRef>#_nbw64XUSEeih-ZEz5QD2Pg</bpmn2:outerParticipantRef>
+      </bpmn2:participantAssociation>
+    </bpmn2:callChoreography>
+    <bpmn2:sequenceFlow id="_BbkH_nUXEeih-ZEz5QD2Pg" sourceRef="_BbkH_XUXEeih-ZEz5QD2Pg" targetRef="_BbkH_3UXEeih-ZEz5QD2Pg"/>
+    <bpmn2:parallelGateway id="_BbkH_3UXEeih-ZEz5QD2Pg" name="payment join">
+      <bpmn2:incoming>_BbkH_HUXEeih-ZEz5QD2Pg</bpmn2:incoming>
+      <bpmn2:incoming>_BbkH_nUXEeih-ZEz5QD2Pg</bpmn2:incoming>
+      <bpmn2:outgoing>_BbkIAHUXEeih-ZEz5QD2Pg</bpmn2:outgoing>
+    </bpmn2:parallelGateway>
+    <bpmn2:sequenceFlow id="_BbkIAHUXEeih-ZEz5QD2Pg" sourceRef="_BbkH_3UXEeih-ZEz5QD2Pg" targetRef="_BbkIAXUXEeih-ZEz5QD2Pg"/>
+    <bpmn2:scriptTask id="_BbkIAXUXEeih-ZEz5QD2Pg" name="transfer title to buyer" scriptFormat="solidity">
+      <bpmn2:incoming>_BbkIAHUXEeih-ZEz5QD2Pg</bpmn2:incoming>
+      <bpmn2:outgoing>_BbkIAnUXEeih-ZEz5QD2Pg</bpmn2:outgoing>
+      <bpmn2:script>grainTitle_addr.call(bytes4(keccak256(&quot;assign(address)&quot;)), participants.get(1));</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="_BbkIAnUXEeih-ZEz5QD2Pg" sourceRef="_BbkIAXUXEeih-ZEz5QD2Pg" targetRef="_BbkIA3UXEeih-ZEz5QD2Pg"/>
+    <bpmn2:endEvent id="_BbkIA3UXEeih-ZEz5QD2Pg" name="order successful">
+      <bpmn2:incoming>_BbkIAnUXEeih-ZEz5QD2Pg</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <ac:ioSpecification xsi:type="bpmn2:tInputOutputSpecification" id="id_root-io-spec">
+      <bpmn2:dataInput id="_nbxh8nUSEeih-ZEz5QD2Pg" itemSubjectRef="#id_OrderDetails" name="orderDetails"/>
+      <bpmn2:dataInput id="_nbxh83USEeih-ZEz5QD2Pg" itemSubjectRef="#id_GrainTitle" name="grainTitle"/>
+    </ac:ioSpecification>
+  </bpmn2:choreography>
+  <bpmn2:choreography id="id_deposit-into-escrow">
+    <ac:neutralEntity xsi:type="bpmn2:tParticipant" id="_6do-hnUUEeih-ZEz5QD2Pg" name="Deposit Neutral"/>
+    <bpmn2:participant id="_6do-hHUUEeih-ZEz5QD2Pg" name="Deposit Escrow Agent"/>
+    <bpmn2:participant id="_6do-gnUUEeih-ZEz5QD2Pg" name="Deposit Depositor"/>
+    <bpmn2:messageFlow id="_QjPxYHUaEeih-ZEz5QD2Pg" messageRef="#_QjPxYXUaEeih-ZEz5QD2Pg" name="accountDetailsDepositorToEscrowAgent" sourceRef="#_6do-gnUUEeih-ZEz5QD2Pg" targetRef="#_6do-hHUUEeih-ZEz5QD2Pg"/>
+    <bpmn2:messageFlow id="_QjPxYnUaEeih-ZEz5QD2Pg" messageRef="#_7p7SwHUREeih-ZEz5QD2Pg" name="ackDepositEscrowAgent" sourceRef="#_6do-hHUUEeih-ZEz5QD2Pg" targetRef="#_6do-hnUUEeih-ZEz5QD2Pg"/>
+    <bpmn2:startEvent id="_QjPxY3UaEeih-ZEz5QD2Pg" name="deposit">
+      <bpmn2:outgoing>_QjPxZHUaEeih-ZEz5QD2Pg</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:sequenceFlow id="_QjPxZHUaEeih-ZEz5QD2Pg" sourceRef="_QjPxY3UaEeih-ZEz5QD2Pg" targetRef="_QjPxZXUaEeih-ZEz5QD2Pg"/>
+    <bpmn2:choreographyTask id="_QjPxZXUaEeih-ZEz5QD2Pg" name="deposit provide account details" initiatingParticipantRef="#_6do-gnUUEeih-ZEz5QD2Pg">
+      <bpmn2:incoming>_QjPxZHUaEeih-ZEz5QD2Pg</bpmn2:incoming>
+      <bpmn2:outgoing>_QjPxZnUaEeih-ZEz5QD2Pg</bpmn2:outgoing>
+      <bpmn2:participantRef>#_6do-gnUUEeih-ZEz5QD2Pg</bpmn2:participantRef>
+      <bpmn2:participantRef>#_6do-hHUUEeih-ZEz5QD2Pg</bpmn2:participantRef>
+      <bpmn2:messageFlowRef>#_QjPxYHUaEeih-ZEz5QD2Pg</bpmn2:messageFlowRef>
+    </bpmn2:choreographyTask>
+    <bpmn2:sequenceFlow id="_QjPxZnUaEeih-ZEz5QD2Pg" sourceRef="_QjPxZXUaEeih-ZEz5QD2Pg" targetRef="_QjPxZ3UaEeih-ZEz5QD2Pg"/>
+    <bpmn2:eventBasedGateway id="_QjPxZ3UaEeih-ZEz5QD2Pg">
+      <bpmn2:incoming>_QjPxZnUaEeih-ZEz5QD2Pg</bpmn2:incoming>
+      <bpmn2:outgoing>_QjPxaHUaEeih-ZEz5QD2Pg</bpmn2:outgoing>
+      <bpmn2:outgoing>_QjPxaXUaEeih-ZEz5QD2Pg</bpmn2:outgoing>
+    </bpmn2:eventBasedGateway>
+    <bpmn2:sequenceFlow id="_QjPxaHUaEeih-ZEz5QD2Pg" sourceRef="_QjPxZ3UaEeih-ZEz5QD2Pg" targetRef="_QjPxanUaEeih-ZEz5QD2Pg"/>
+    <bpmn2:sequenceFlow id="_QjPxaXUaEeih-ZEz5QD2Pg" sourceRef="_QjPxZ3UaEeih-ZEz5QD2Pg" targetRef="_QjPxa3UaEeih-ZEz5QD2Pg"/>
+    <bpmn2:choreographyTask id="_QjPxanUaEeih-ZEz5QD2Pg" name="deposit secured" initiatingParticipantRef="#_6do-hHUUEeih-ZEz5QD2Pg">
+      <bpmn2:incoming>_QjPxaHUaEeih-ZEz5QD2Pg</bpmn2:incoming>
+      <bpmn2:outgoing>_QjPxbHUaEeih-ZEz5QD2Pg</bpmn2:outgoing>
+      <bpmn2:participantRef>#_6do-hHUUEeih-ZEz5QD2Pg</bpmn2:participantRef>
+      <bpmn2:participantRef>#_6do-hnUUEeih-ZEz5QD2Pg</bpmn2:participantRef>
+      <bpmn2:messageFlowRef>#_QjPxYnUaEeih-ZEz5QD2Pg</bpmn2:messageFlowRef>
+    </bpmn2:choreographyTask>
+    <bpmn2:sequenceFlow id="_QjPxbHUaEeih-ZEz5QD2Pg" sourceRef="_QjPxanUaEeih-ZEz5QD2Pg" targetRef="_QjPxbXUaEeih-ZEz5QD2Pg"/>
+    <bpmn2:choreographyTask id="_QjPxa3UaEeih-ZEz5QD2Pg" name="deposit failed" initiatingParticipantRef="#_6do-hHUUEeih-ZEz5QD2Pg">
+      <bpmn2:incoming>_QjPxaXUaEeih-ZEz5QD2Pg</bpmn2:incoming>
+      <bpmn2:outgoing>_QjPxbnUaEeih-ZEz5QD2Pg</bpmn2:outgoing>
+      <bpmn2:participantRef>#_6do-hHUUEeih-ZEz5QD2Pg</bpmn2:participantRef>
+      <bpmn2:participantRef>#_6do-hnUUEeih-ZEz5QD2Pg</bpmn2:participantRef>
+      <bpmn2:messageFlowRef>#_QjPxYnUaEeih-ZEz5QD2Pg</bpmn2:messageFlowRef>
+    </bpmn2:choreographyTask>
+    <bpmn2:sequenceFlow id="_QjPxbnUaEeih-ZEz5QD2Pg" sourceRef="_QjPxa3UaEeih-ZEz5QD2Pg" targetRef="_QjPxb3UaEeih-ZEz5QD2Pg"/>
+    <bpmn2:endEvent id="_QjPxbXUaEeih-ZEz5QD2Pg" name="deposit secured">
+      <bpmn2:incoming>_QjPxbHUaEeih-ZEz5QD2Pg</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:endEvent id="_QjPxb3UaEeih-ZEz5QD2Pg" name="deposit deposit failed">
+      <bpmn2:incoming>_QjPxbnUaEeih-ZEz5QD2Pg</bpmn2:incoming>
+      <bpmn2:eventDefinitionRef>#id_depositFailed</bpmn2:eventDefinitionRef>
+    </bpmn2:endEvent>
+    <ac:ioSpecification xsi:type="bpmn2:tInputOutputSpecification" id="_b2oUsHUbEeih-ZEz5QD2Pg">
+      <bpmn2:dataInput id="_b2oUsXUbEeih-ZEz5QD2Pg" itemSubjectRef="#id_Amount" name="depositAmount"/>
+    </ac:ioSpecification>
+  </bpmn2:choreography>
+  <bpmn2:choreography id="id_withdraw-from-escrow">
+    <ac:neutralEntity xsi:type="bpmn2:tParticipant" id="_BbkIBHUXEeih-ZEz5QD2Pg" name="Withdraw Neutral"/>
+    <bpmn2:participant id="_BbkIBXUXEeih-ZEz5QD2Pg" name="Withdraw Escrow Agent"/>
+    <bpmn2:participant id="_BbkIBnUXEeih-ZEz5QD2Pg" name="Withdraw Withdrawer"/>
+    <bpmn2:messageFlow id="_b2oUsnUbEeih-ZEz5QD2Pg" messageRef="#_QjPxYXUaEeih-ZEz5QD2Pg" name="accountDetailsWithdrawerToEscrowAgent" sourceRef="#_BbkIBnUXEeih-ZEz5QD2Pg" targetRef="#_BbkIBXUXEeih-ZEz5QD2Pg"/>
+    <bpmn2:messageFlow id="_b2oUs3UbEeih-ZEz5QD2Pg" messageRef="#_7p7SwHUREeih-ZEz5QD2Pg" name="ackWithdrawalEscrowAgent" sourceRef="#_BbkIBXUXEeih-ZEz5QD2Pg" targetRef="#_BbkIBHUXEeih-ZEz5QD2Pg"/>
+    <bpmn2:startEvent id="_b2oUtHUbEeih-ZEz5QD2Pg" name="withdrawal">
+      <bpmn2:outgoing>_b2oUtXUbEeih-ZEz5QD2Pg</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:sequenceFlow id="_b2oUtXUbEeih-ZEz5QD2Pg" sourceRef="_b2oUtHUbEeih-ZEz5QD2Pg" targetRef="_b2oUtnUbEeih-ZEz5QD2Pg"/>
+    <bpmn2:choreographyTask id="_b2oUtnUbEeih-ZEz5QD2Pg" name="withdrawal provide account details" initiatingParticipantRef="#_BbkIBnUXEeih-ZEz5QD2Pg">
+      <bpmn2:incoming>_b2oUtXUbEeih-ZEz5QD2Pg</bpmn2:incoming>
+      <bpmn2:outgoing>_b2oUt3UbEeih-ZEz5QD2Pg</bpmn2:outgoing>
+      <bpmn2:participantRef>#_BbkIBXUXEeih-ZEz5QD2Pg</bpmn2:participantRef>
+      <bpmn2:participantRef>#_BbkIBnUXEeih-ZEz5QD2Pg</bpmn2:participantRef>
+      <bpmn2:messageFlowRef>#_b2oUsnUbEeih-ZEz5QD2Pg</bpmn2:messageFlowRef>
+    </bpmn2:choreographyTask>
+    <bpmn2:sequenceFlow id="_b2oUt3UbEeih-ZEz5QD2Pg" sourceRef="_b2oUtnUbEeih-ZEz5QD2Pg" targetRef="_b2oUuHUbEeih-ZEz5QD2Pg"/>
+    <bpmn2:choreographyTask id="_b2oUuHUbEeih-ZEz5QD2Pg" name="confirm transfer" initiatingParticipantRef="#_BbkIBXUXEeih-ZEz5QD2Pg">
+      <bpmn2:incoming>_b2oUt3UbEeih-ZEz5QD2Pg</bpmn2:incoming>
+      <bpmn2:outgoing>_b2oUuXUbEeih-ZEz5QD2Pg</bpmn2:outgoing>
+      <bpmn2:participantRef>#_BbkIBXUXEeih-ZEz5QD2Pg</bpmn2:participantRef>
+      <bpmn2:participantRef>#_BbkIBHUXEeih-ZEz5QD2Pg</bpmn2:participantRef>
+      <bpmn2:messageFlowRef>#_b2oUs3UbEeih-ZEz5QD2Pg</bpmn2:messageFlowRef>
+    </bpmn2:choreographyTask>
+    <bpmn2:sequenceFlow id="_b2oUuXUbEeih-ZEz5QD2Pg" sourceRef="_b2oUuHUbEeih-ZEz5QD2Pg" targetRef="_b2oUunUbEeih-ZEz5QD2Pg"/>
+    <bpmn2:endEvent id="_b2oUunUbEeih-ZEz5QD2Pg" name="withdrawal successful">
+      <bpmn2:incoming>_b2oUuXUbEeih-ZEz5QD2Pg</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <ac:ioSpecification xsi:type="bpmn2:tInputOutputSpecification" id="_b2oUu3UbEeih-ZEz5QD2Pg">
+      <bpmn2:dataInput id="_b2oUvHUbEeih-ZEz5QD2Pg" itemSubjectRef="#id_Amount" name="withdrawalAmount"/>
+    </ac:ioSpecification>
+  </bpmn2:choreography>
+  <bpmn2:itemDefinition id="id_OrderDetails" structureRef="[[&quot;uint8&quot;,&quot;grade&quot;],[&quot;uint16&quot;,&quot;tonnes&quot;],[&quot;uint16&quot;,&quot;tolerance&quot;],[&quot;uint16&quot;,&quot;price&quot;]]"/>
+  <bpmn2:itemDefinition id="id_GrainTitle" structureRef="[[&quot;address&quot;,&quot;addr&quot;]]"/>
+  <bpmn2:itemDefinition id="id_Amount" structureRef="[[&quot;uint16&quot;,&quot;amount&quot;]]"/>
+  <bpmn2:itemDefinition id="id_DeliveryDetails" structureRef="[[&quot;uint8&quot;,&quot;grade&quot;],[&quot;uint16&quot;,&quot;tonnes&quot;]]"/>
+  <bpmn2:itemDefinition id="id_LabResult" structureRef="[[&quot;uint8&quot;,&quot;grade&quot;]]"/>
+  <bpmn2:itemDefinition id="id_Weighing" structureRef="[[&quot;uint16&quot;,&quot;tonnes&quot;]]"/>
+  <bpmn2:itemDefinition id="id_BankAccount" structureRef="[[&quot;uint16&quot;,&quot;bsb&quot;],[&quot;uint32&quot;,&quot;account&quot;]]"/>
+  <bpmn2:message id="_7p7SwHUREeih-ZEz5QD2Pg" name="ack"/>
+  <bpmn2:message id="_7p7SwXUREeih-ZEz5QD2Pg" itemRef="#id_Weighing" name="inboundWeight"/>
+  <bpmn2:message id="_7p7SwnUREeih-ZEz5QD2Pg" itemRef="#id_Weighing" name="outboundWeight"/>
+  <bpmn2:message id="_7p7Sw3UREeih-ZEz5QD2Pg" itemRef="#id_LabResult" name="analysisResult"/>
+  <bpmn2:message id="_QjPxYXUaEeih-ZEz5QD2Pg" itemRef="#id_BankAccount" name="accountDetails"/>
+  <bpmn2:errorEventDefinition id="id_titleIsInvalid"/>
+  <bpmn2:errorEventDefinition id="id_depositFailed"/>
+  <bpmn2:errorEventDefinition id="id_startGtaArbitration"/>
+</bpmn2:definitions>
